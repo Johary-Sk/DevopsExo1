@@ -8,6 +8,11 @@ pipeline {
             }
         }
 
+	stage {
+		steps {
+			// Supprime tout les images
+			sh 'docker system prune -af || true 
+
         stage('Build backend') {
             steps {
                 sh 'docker build -t backend-image ./backend'
