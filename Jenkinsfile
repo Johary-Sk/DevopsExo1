@@ -42,7 +42,7 @@ pipeline {
         stage('Test backend with curl') {
             steps {
                 // Test avec curl pour vérifier que le backend fonctionne
-                sh 'curl --fail http://172.17.0.1:3000 || echo "Build success"'
+                sh 'curl --fail http://172.17.0.1:3000/tasks || echo "Build success"'
             }
         }
 
