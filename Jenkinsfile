@@ -42,14 +42,14 @@ pipeline {
         stage('Test backend with curl') {
             steps {
                 // Test avec curl pour vérifier que le backend fonctionne
-                sh 'curl --fail http://192.168.73.130:3000'
+                sh 'curl --fail http://localhost:3000'
             }
         }
 
         stage('Test frontend with curl') {
             steps {
                 // Test avec curl pour vérifier que le frontend fonctionne
-                sh 'curl --fail http://192.168.73.130:8000'
+                sh 'curl --fail http://localhost:8000'
             }
         }
     }
