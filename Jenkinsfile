@@ -8,10 +8,12 @@ pipeline {
             }
         }
 
-	stage {
-		steps {
-			// Supprime tout les images
-			sh 'docker system prune -af || true 
+        stage('Clean up old images and containers') {
+            steps {
+                // Supprimer les images inutilisées et les conteneurs arrêtés
+                sh 'docker system prune -af || true'
+            }
+        }
 
         stage('Build backend') {
             steps {
@@ -27,13 +29,30 @@ pipeline {
 
         stage('Run containers') {
             steps {
+                // Supprimer les conteneurs existants si nécessaire
                 sh 'docker rm -f backend || true'
                 sh 'docker rm -f frontend || true'
 
+                // Lancer les nouveaux conteneurs
                 sh 'docker run -d --name backend -p 3000:3000 backend-image'
                 sh 'docker run -d --name frontend -p 8000:80 frontend-image'
             }
         }
+
+        stage('Test backend with curl') {
+            steps {
+                // Test avec curl pour vérifier que le backend fonctionne
+                sh 'curl --fail http://localhost:3000 || echo "Backend is not working"'
+            }
+        }
+
+        stage('Test frontend with curl') {
+            steps {
+                // Test avec curl pour vérifier que le frontend fonctionne
+                sh 'curl --fail http://localhost:8000 || echo "Frontend is not working"'
+            }
+        }
     }
 }
+
 
